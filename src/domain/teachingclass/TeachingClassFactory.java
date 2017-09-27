@@ -7,7 +7,7 @@ import infrastructure.entityID.CourseID;
 import infrastructure.entityID.TeachingClassID;
 
 /**
- * ½ÌÑ§°à¹¤³§
+ * æ•™å­¦ç­å·¥å‚
  * @author zhangyp
  *
  */

@@ -4,7 +4,7 @@
 package domain.share;
 
 /**
- * �ڿν�Ա��ɫ
+ * 上课教员岗位类型
  * @author zhangyp
  *
  */
