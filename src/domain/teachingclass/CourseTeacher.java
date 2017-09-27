@@ -4,11 +4,7 @@ import domain.share.TeacherPositionEnum;
 import infrastructure.entityID.TeacherID;
 
 /**
-<<<<<<< HEAD
- * 授课教员
-=======
  *上课教员
->>>>>>> origin/master
  * @author zhangyp
  *
  */

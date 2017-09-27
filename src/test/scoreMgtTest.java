@@ -21,11 +21,8 @@ public class scoreMgtTest {
 		
 		TeachingClassID teachingClassID=new TeachingClassID();
 		CourseID courseID=new CourseID();
-<<<<<<< HEAD
+
 		String courseName="张三";
-=======
-		String courseName="´óÑ§Ó¢Óï";
->>>>>>> origin/master
 		TeachingClass aTeachingClass=TeachingClassFactory.createTeachingClassFactory().createTeachingClass(teachingClassID, courseID, courseName);
 		/*test*/
 		TeacherID assignMajorTeacherID=new TeacherID();
@@ -44,11 +41,8 @@ public class scoreMgtTest {
 		
 		TeachingClassID teachingClassID=new TeachingClassID();
 		CourseID courseID=new CourseID();
-<<<<<<< HEAD
+
 		String courseName="李四";
-=======
-		String courseName="´óÑ§ÎïÀí";
->>>>>>> origin/master
 		TeachingClass aTeachingClass=TeachingClassFactory.createTeachingClassFactory().createTeachingClass(teachingClassID, courseID, courseName);
 		
 		StudentID firstStudentID=new StudentID();
