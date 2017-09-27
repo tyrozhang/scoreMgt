@@ -21,9 +21,9 @@ public class scoreMgtTest {
 		
 		TeachingClassID teachingClassID=new TeachingClassID();
 		CourseID courseID=new CourseID();
-		String courseName="大学英语";
+		String courseName="麓贸脩搂脫垄脫茂";
 		TeachingClass aTeachingClass=TeachingClassFactory.createTeachingClassFactory().createTeachingClass(teachingClassID, courseID, courseName);
-		
+		/*test*/
 		TeacherID assignMajorTeacherID=new TeacherID();
 		aTeachingClass.assignCourseTeacher(assignMajorTeacherID,TeacherPositionEnum.MAJOR);
 		
@@ -40,7 +40,7 @@ public class scoreMgtTest {
 		
 		TeachingClassID teachingClassID=new TeachingClassID();
 		CourseID courseID=new CourseID();
-		String courseName="大学物理";
+		String courseName="麓贸脩搂脦茂脌铆";
 		TeachingClass aTeachingClass=TeachingClassFactory.createTeachingClassFactory().createTeachingClass(teachingClassID, courseID, courseName);
 		
 		StudentID firstStudentID=new StudentID();
