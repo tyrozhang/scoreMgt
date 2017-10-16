@@ -1,6 +1,6 @@
-package domain.teachingclass;
+package gds.scoreMgt.domain.registerscore.teachingclass;
 
-import domain.share.TeacherPositionEnum;
+import gds.scoreMgt.domain.share.TeacherPositionEnum;
 import infrastructure.entityID.TeacherID;
 
 /**

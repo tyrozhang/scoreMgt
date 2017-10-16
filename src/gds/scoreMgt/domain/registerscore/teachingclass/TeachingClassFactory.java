@@ -1,7 +1,7 @@
 /**
  * 
  */
-package domain.teachingclass;
+package gds.scoreMgt.domain.registerscore.teachingclass;
 
 import infrastructure.entityID.CourseID;
 import infrastructure.entityID.TeachingClassID;

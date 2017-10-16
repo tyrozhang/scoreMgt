@@ -1,4 +1,4 @@
-package domain.student;
+package gds.scoreMgt.domain.student;
 
 import infrastructure.entityID.EntityID;
 import infrastructure.entityID.StudentID;

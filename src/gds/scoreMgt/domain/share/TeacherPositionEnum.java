@@ -1,7 +1,7 @@
 /**
  * 
  */
-package domain.share;
+package gds.scoreMgt.domain.share;
 
 /**
  * 上课教员岗位类型
