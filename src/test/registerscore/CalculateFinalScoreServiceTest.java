@@ -6,11 +6,11 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import gds.scoreMgt.domain.registerscore.CalculateFinalScoreService;
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClass;
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassFactory;
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassRepository;
 import gds.scoreMgt.domain.share.Mark;
 import gds.scoreMgt.domain.share.MarkTypeEnum;
+import gds.scoreMgt.domain.teachingclass.TeachingClass;
+import gds.scoreMgt.domain.teachingclass.TeachingClassFactory;
+import gds.scoreMgt.domain.teachingclass.TeachingClassRepository;
 import infrastructure.entityID.CourseID;
 import infrastructure.entityID.StudentID;
 import infrastructure.entityID.TeachingClassID;

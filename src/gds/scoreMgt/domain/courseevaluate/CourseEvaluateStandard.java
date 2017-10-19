@@ -88,4 +88,11 @@ public class CourseEvaluateStandard {
 		
 		return false;
 	}
+	
+	/**
+	 * 考核标准是否要求考核该类成绩
+	 */
+	public boolean requireMarkType(MarkTypeEnum markType){
+		return this.requireMarkTypes.contains(markType)?true:false;
+	}
 }

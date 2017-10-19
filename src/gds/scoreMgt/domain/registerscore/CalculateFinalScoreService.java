@@ -3,10 +3,12 @@ package gds.scoreMgt.domain.registerscore;
 import java.util.HashMap;
 
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandard;
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClass;
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassRepository;
+import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
+import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
 import gds.scoreMgt.domain.share.Mark;
 import gds.scoreMgt.domain.share.MarkTypeEnum;
+import gds.scoreMgt.domain.teachingclass.TeachingClass;
+import gds.scoreMgt.domain.teachingclass.TeachingClassRepository;
 import infrastructure.entityID.CourseID;
 import infrastructure.entityID.StudentID;
 import infrastructure.entityID.TeachingClassID;
@@ -19,15 +21,15 @@ public class CalculateFinalScoreService {
 	@SuppressWarnings("rawtypes")
 	public Mark calculateFinalScore(TeachingClassID teachingClassID,StudentID studentID) throws Exception{
 		//得到学生的课程分项成绩
-		TeachingClass teachingClass=TeachingClassRepository.getInstance().getTeachingClass(teachingClassID);
+		TeachingClassScore teachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(teachingClassID);
 		
-		HashMap<MarkTypeEnum,Mark> subScore=teachingClass.getStudentAllSubMark(studentID);
+		HashMap<MarkTypeEnum,Mark> subScore=teachingClassScore.getStudentAllSubMark(studentID);
 		
 		if(subScore==null) return null;
 		if(subScore.isEmpty()) return null;
 		
 		//得到课程的考核标准
-		CourseID courseID=teachingClass.getCourseID();
+		CourseID courseID=teachingClassScore.getCourseID();
 		//以下为模拟代码
 		CourseEvaluateStandard courseEvaluateStandard=new CourseEvaluateStandard(courseID);
 		courseEvaluateStandard.addRequireMarkTypes(MarkTypeEnum.DAILYPORFORMANCE);

@@ -1,14 +1,7 @@
-package gds.scoreMgt.domain.registerscore.teachingclass;
+package gds.scoreMgt.domain.teachingclass;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import gds.scoreMgt.domain.share.Mark;
-import gds.scoreMgt.domain.share.MarkTypeEnum;
 import gds.scoreMgt.domain.share.TeacherPositionEnum;
 import infrastructure.entityID.CourseID;
 import infrastructure.entityID.StudentID;
@@ -28,7 +21,7 @@ public class TeachingClass {
 	private String studingInterval;
 	private ArrayList<CourseTeacher> courseTeachers;
 	private ArrayList<StudentID> students;
-	private HashMap<MarkTypeEnum,ScoreReportCard> scoreReportCards=new HashMap<MarkTypeEnum,ScoreReportCard>();
+	
 	
 	public TeachingClass(TeachingClassID teachingClassID,CourseID courseID,String courseName){
 		this.teachingClassID=teachingClassID;
@@ -106,79 +99,19 @@ public class TeachingClass {
 		this.students.add(studentID);
 	} 
 	
-	/**
-	 * 登记成绩
-	 * @param studentID
-	 * @param markType
-	 * @param mark
-	 * @throws Exception
+	/*
+	 * 是否上课学员
 	 */
-	@SuppressWarnings("rawtypes")
-	public void registerScore(StudentID studentID, MarkTypeEnum markType,Mark mark) throws Exception{
-		//校验学生是否是本教学班学生
+	public boolean isStudyStudent(StudentID studentID){
 		if(this.students==null) {
-			throw new Exception("对不起，不是教学班上课学员，不能录入成绩！");
+			return false;
 		}
 		
-		if(!this.students.contains(studentID)){
-			throw new Exception("对不起，不是教学班上课学员，不能录入成绩！");
+		if(this.students.contains(studentID)){
+			return true;
 		}
 		
-		//如果登记表不存在，先创建登记表
-		if(!this.scoreReportCards.containsKey(markType)){
-			this.scoreReportCards.put(markType, new ScoreReportCard(markType));
-		}
-		
-		//登记成绩
-		this.getScoreReportCard(markType).registerScore(studentID, mark);
+		return false;
 	}
 	
-	/**
-	 * 得到指定成绩登记单
-	 * @return 登记单
-	 */
-	private ScoreReportCard getScoreReportCard(MarkTypeEnum markType){
-		if(this.scoreReportCards==null) return null;
-		return this.scoreReportCards.get(markType);
-	}
-	
-	/**
-	 * 得到学生登记的某项成绩
-	 * @param studentID
-	 * @param markType
-	 * @return 分数
-	 */
-	@SuppressWarnings("rawtypes")
-	public Mark getStudentScore(StudentID studentID,MarkTypeEnum markType){
-		ScoreReportCard reportCard=this.getScoreReportCard(markType);
-		if(reportCard==null) return null;
-		
-		return reportCard.getScore(studentID);
-	}
-	
-	/**
-	 * 得到该教学班中某学生的所有分项成绩
-	 * @param studentID
-	 * @return 分项成绩集合
-	 */
-	public HashMap<MarkTypeEnum,Mark> getStudentAllSubMark(StudentID studentID){
-		if(this.scoreReportCards.isEmpty()) return null;
-		
-		HashMap<MarkTypeEnum,Mark> studentSubMark = null;
-		
-		Iterator iter=this.scoreReportCards.entrySet().iterator();
-		while(iter.hasNext()){
-			
-			Map.Entry<MarkTypeEnum,ScoreReportCard> entry=(Map.Entry<MarkTypeEnum,ScoreReportCard>)iter.next();
-			
-			Mark oneMark =entry.getValue().getScore(studentID);
-			if(oneMark!=null){
-				if(studentSubMark==null) {
-					studentSubMark=new HashMap<MarkTypeEnum,Mark>();
-				}
-				studentSubMark.put(entry.getKey(), oneMark);
-			}
-		}
-		return studentSubMark;
-	}
 }
