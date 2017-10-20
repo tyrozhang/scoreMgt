@@ -17,7 +17,7 @@ public  class TeachingClassScoreFactory {
 		
 	}
 	
-	public static TeachingClassScoreFactory createTeachingClassScoreFactory()
+	public static TeachingClassScoreFactory getInstance()
 	{
 		if (teachingClassScoreFactory==null){
 			teachingClassScoreFactory=new TeachingClassScoreFactory();

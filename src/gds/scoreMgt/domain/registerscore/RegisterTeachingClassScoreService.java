@@ -67,7 +67,7 @@ public  class RegisterTeachingClassScoreService<T> {
 	private TeachingClassScore getTeachingClassScore(TeachingClass aTeachingClass) {
 		TeachingClassScore curTeachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(aTeachingClass.getTeachingClassID());
 		if(curTeachingClassScore==null){
-			curTeachingClassScore=TeachingClassScoreFactory.createTeachingClassScoreFactory().createTeachingClassScore(aTeachingClass.getTeachingClassID(), aTeachingClass.getCourseID(), aTeachingClass.getCourseName(), "", "");
+			curTeachingClassScore=TeachingClassScoreFactory.getInstance().createTeachingClassScore(aTeachingClass.getTeachingClassID(), aTeachingClass.getCourseID(), aTeachingClass.getCourseName(), "", "");
 			TeachingClassScoreRepository.getInstance().save(curTeachingClassScore);
 		}
 		return curTeachingClassScore;

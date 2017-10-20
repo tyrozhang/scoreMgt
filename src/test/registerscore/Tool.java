@@ -16,7 +16,7 @@ public class Tool {
 	//生成教学班
 	public static TeachingClassID createTeachingClass(CourseID courseID,String courseName){
 		TeachingClassID teachingClassID=new TeachingClassID();
-		TeachingClass aTeachingClass=TeachingClassFactory.createTeachingClassFactory().createTeachingClass(teachingClassID, courseID, courseName);
+		TeachingClass aTeachingClass=TeachingClassFactory.getInstance().createTeachingClass(teachingClassID, courseID, courseName);
 		TeachingClassRepository.getInstance().save(aTeachingClass);
 		return teachingClassID;
 	}
@@ -33,7 +33,7 @@ public class Tool {
 	//生成教学班成绩
 	public static void createTeachingClassScore(TeachingClassID teachingClassID,CourseID courseID,String courseName,String courseTeachersDescript,String studyStdentsDescript){
 
-		TeachingClassScore aTeachingClassScore=TeachingClassScoreFactory.createTeachingClassScoreFactory().createTeachingClassScore(teachingClassID, courseID, courseName, courseTeachersDescript, studyStdentsDescript);
+		TeachingClassScore aTeachingClassScore=TeachingClassScoreFactory.getInstance().createTeachingClassScore(teachingClassID, courseID, courseName, courseTeachersDescript, studyStdentsDescript);
 		TeachingClassScoreRepository.getInstance().save(aTeachingClassScore);
 	}
 	

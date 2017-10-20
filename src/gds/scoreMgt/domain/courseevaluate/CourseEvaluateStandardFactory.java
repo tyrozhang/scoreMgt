@@ -17,7 +17,7 @@ public  class CourseEvaluateStandardFactory {
 		
 	}
 	
-	public static CourseEvaluateStandardFactory createCourseEvaluateStandardFactory()
+	public static CourseEvaluateStandardFactory getInstance()
 	{
 		if (courseEvaluateStandardFactory==null){
 			courseEvaluateStandardFactory=new CourseEvaluateStandardFactory();

@@ -33,7 +33,7 @@ public class CalculateFinalScoreServiceTest {
 		StudentID secondStudentID=Tool.AddStudentToTeachingClass(teachingClassID);
 
 		//添加课程标准
-		CourseEvaluateStandard courseEvaluateStandard=CourseEvaluateStandardFactory.createCourseEvaluateStandardFactory().createCourseEvaluateStandard(courseID);
+		CourseEvaluateStandard courseEvaluateStandard=CourseEvaluateStandardFactory.getInstance().createCourseEvaluateStandard(courseID);
 		courseEvaluateStandard.addRequireMarkTypes(MarkTypeEnum.DAILYPORFORMANCE);
 		courseEvaluateStandard.addRequireMarkTypes(MarkTypeEnum.TESTPAPERMARK);
 		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(MarkTypeEnum.DAILYPORFORMANCE, 30f);
