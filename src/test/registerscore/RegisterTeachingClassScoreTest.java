@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandard;
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardFactory;
+import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardRepository;
 import gds.scoreMgt.domain.registerscore.RegisterTeachingClassScoreService;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
@@ -48,11 +49,11 @@ public class RegisterTeachingClassScoreTest {
 		courseEvaluateStandard.addRequireMarkTypes(MarkTypeEnum.TESTPAPERMARK);
 		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(MarkTypeEnum.DAILYPORFORMANCE, 30f);
 		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(MarkTypeEnum.TESTPAPERMARK, 70f);
-
+		CourseEvaluateStandardRepository.getInstance().save(courseEvaluateStandard);
 		/*
 		 * 登记成绩
 		 */
-		RegisterTeachingClassScoreService<Double> rtss=new RegisterTeachingClassScoreService<Double>();
+		RegisterTeachingClassScoreService<Float> rtss=new RegisterTeachingClassScoreService<Float>();
 		//登记平时成绩
 		rtss.registerScore(teachingClassID,firstStudentID,MarkTypeEnum.DAILYPORFORMANCE, new Mark<Float>(80f));
 		rtss.registerScore(teachingClassID,secondStudentID,MarkTypeEnum.DAILYPORFORMANCE, new Mark<Float>(90f));

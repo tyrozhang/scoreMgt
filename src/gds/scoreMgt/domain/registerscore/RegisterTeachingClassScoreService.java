@@ -1,6 +1,8 @@
 package gds.scoreMgt.domain.registerscore;
 
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandard;
+import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardFactory;
+import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardRepository;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreFactory;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
@@ -23,13 +25,13 @@ public  class RegisterTeachingClassScoreService<T> {
 		super();
 	}
 	
-	public void registerScore(TeachingClassID teachingClassID,StudentID studentID, MarkTypeEnum markType,Mark mark) throws Exception{
+	public void registerScore(TeachingClassID teachingClassID,StudentID studentID, MarkTypeEnum markType,Mark<T> mark) throws Exception{
 	
 		/*
 		 * 查看学员是否是上课学员之一
 		 */
 		TeachingClass aTeachingClass=TeachingClassRepository.getInstance().getTeachingClass(teachingClassID);
-		if(aTeachingClass.isStudyStudent(studentID)) {
+		if(!aTeachingClass.isStudyStudent(studentID)) {
 			throw new Exception("对不起，不是教学班上课学员，不能录入成绩！");
 		}
 		
@@ -39,15 +41,19 @@ public  class RegisterTeachingClassScoreService<T> {
 		/*
 		 * 检查登记的成绩类型是否符合当前课程的考核标准要求
 		 */
-		CourseEvaluateStandard courseEvaluateStandard=new CourseEvaluateStandard(curTeachingClassScore.getCourseID());
+		CourseEvaluateStandard courseEvaluateStandard=CourseEvaluateStandardRepository.getInstance().getCourseEvaluateStandard(curTeachingClassScore.getCourseID());
+		if(courseEvaluateStandard==null){
+			throw new Exception("课程标准未制定,请核查!");
+		}
+		
 		//检查课程标准中权重是否维护完善
 		if(!courseEvaluateStandard.sumWeightingIsHundred()){
-			throw new Exception("课程标准未制定完成，其分项成绩权重之和小于100,请在录入成绩前维护完善该考核标准。");
+			throw new Exception("课程标准未制定不完善，其分项成绩权重之和不是100%,请完善！");
 		}
 		
 		if(!courseEvaluateStandard.requireMarkType(markType))
 		{
-			throw new Exception("当前课程没有要求考核给类成绩，请核查！");
+			throw new Exception("当前课程没有要求考核该类成绩，请核查！");
 		}
 				
 		//登记成绩
@@ -56,12 +62,13 @@ public  class RegisterTeachingClassScoreService<T> {
 	}
 
 	/*
-	 * 取教学班成绩对象
+	 * 取教学班成绩登记对象
 	 */
 	private TeachingClassScore getTeachingClassScore(TeachingClass aTeachingClass) {
 		TeachingClassScore curTeachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(aTeachingClass.getTeachingClassID());
 		if(curTeachingClassScore==null){
 			curTeachingClassScore=TeachingClassScoreFactory.createTeachingClassScoreFactory().createTeachingClassScore(aTeachingClass.getTeachingClassID(), aTeachingClass.getCourseID(), aTeachingClass.getCourseName(), "", "");
+			TeachingClassScoreRepository.getInstance().save(curTeachingClassScore);
 		}
 		return curTeachingClassScore;
 	}
