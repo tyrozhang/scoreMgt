@@ -1,7 +1,7 @@
 package gds.scoreMgt.domain.share;
 
 /**
- * 分数
+ * 分数类 
  * @author zhangyp
  *
  */

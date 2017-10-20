@@ -10,8 +10,9 @@ import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardFactory;
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardRepository;
 import gds.scoreMgt.domain.registerscore.CalculateFinalScoreService;
 import gds.scoreMgt.domain.registerscore.RegisterTeachingClassScoreService;
+import gds.scoreMgt.domain.share.CheckTypeEnum;
 import gds.scoreMgt.domain.share.Mark;
-import gds.scoreMgt.domain.share.MarkTypeEnum;
+import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import gds.scoreMgt.domain.teachingclass.TeachingClass;
 import gds.scoreMgt.domain.teachingclass.TeachingClassFactory;
 import gds.scoreMgt.domain.teachingclass.TeachingClassRepository;
@@ -34,22 +35,23 @@ public class CalculateFinalScoreServiceTest {
 
 		//添加课程标准
 		CourseEvaluateStandard courseEvaluateStandard=CourseEvaluateStandardFactory.getInstance().createCourseEvaluateStandard(courseID);
-		courseEvaluateStandard.addRequireMarkTypes(MarkTypeEnum.DAILYPORFORMANCE);
-		courseEvaluateStandard.addRequireMarkTypes(MarkTypeEnum.TESTPAPERMARK);
-		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(MarkTypeEnum.DAILYPORFORMANCE, 30f);
-		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(MarkTypeEnum.TESTPAPERMARK, 70f);
+		courseEvaluateStandard.addRequireMarkTypes(ScoreTypeEnum.DAILYPORFORMANCE);
+		courseEvaluateStandard.addRequireMarkTypes(ScoreTypeEnum.TESTPAPERMARK);
+		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum.DAILYPORFORMANCE, 30f);
+		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum.TESTPAPERMARK, 70f);
+		courseEvaluateStandard.setCheckType(CheckTypeEnum.EXAM);
 		CourseEvaluateStandardRepository.getInstance().save(courseEvaluateStandard);
 		/*
 		 * 登记成绩
 		 */
 		RegisterTeachingClassScoreService<Float> rtss=new RegisterTeachingClassScoreService<Float>();
 		//登记平时成绩
-		rtss.registerScore(teachingClassID,firstStudentID,MarkTypeEnum.DAILYPORFORMANCE, new Mark<Float>(80f));
-		rtss.registerScore(teachingClassID,secondStudentID,MarkTypeEnum.DAILYPORFORMANCE, new Mark<Float>(90f));
+		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new Mark<Float>(80f));
+		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new Mark<Float>(90f));
 		
 		//登记考试成绩
-		rtss.registerScore(teachingClassID,firstStudentID,MarkTypeEnum.TESTPAPERMARK, new Mark<Float>(75f));
-		rtss.registerScore(teachingClassID,secondStudentID,MarkTypeEnum.TESTPAPERMARK, new Mark<Float>(87f));
+		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.TESTPAPERMARK, new Mark<Float>(75f));
+		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.TESTPAPERMARK, new Mark<Float>(87f));
 
 		//计算最终成绩
 		CalculateFinalScoreService alculateFinalScoreService=new CalculateFinalScoreService();

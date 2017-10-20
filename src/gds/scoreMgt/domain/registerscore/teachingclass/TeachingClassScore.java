@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import gds.scoreMgt.domain.share.Mark;
-import gds.scoreMgt.domain.share.MarkTypeEnum;
+import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import infrastructure.entityID.CourseID;
 import infrastructure.entityID.StudentID;
 import infrastructure.entityID.TeachingClassID;
@@ -14,7 +14,7 @@ public class TeachingClassScore {
 	private TeachingClassID teachingClassID;
 	private CourseID courseID;
 	
-	private HashMap<MarkTypeEnum,ScoreReportCard> scoreReportCards=new HashMap<MarkTypeEnum,ScoreReportCard>();
+	private HashMap<ScoreTypeEnum,ScoreReportCard> scoreReportCards=new HashMap<ScoreTypeEnum,ScoreReportCard>();
 	
 	public TeachingClassScore(TeachingClassID teachingClassID,CourseID courseID,String courseName,String courseTeachersDescript,
 			String studyStudentsDescript){
@@ -39,7 +39,7 @@ public class TeachingClassScore {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public void registerScore(StudentID studentID, MarkTypeEnum markType,Mark mark) throws Exception{
+	public void registerScore(StudentID studentID, ScoreTypeEnum markType,Mark mark) throws Exception{
 		
 		
 		//如果登记表不存在，先创建登记表
@@ -55,7 +55,7 @@ public class TeachingClassScore {
 	 * 得到指定成绩登记单
 	 * @return 登记单
 	 */
-	private ScoreReportCard getScoreReportCard(MarkTypeEnum markType){
+	private ScoreReportCard getScoreReportCard(ScoreTypeEnum markType){
 		if(this.scoreReportCards==null) return null;
 		return this.scoreReportCards.get(markType);
 	}
@@ -67,7 +67,7 @@ public class TeachingClassScore {
 	 * @return 分数
 	 */
 	@SuppressWarnings("rawtypes")
-	public Mark getStudentScore(StudentID studentID,MarkTypeEnum markType){
+	public Mark getStudentScore(StudentID studentID,ScoreTypeEnum markType){
 		ScoreReportCard reportCard=this.getScoreReportCard(markType);
 		if(reportCard==null) return null;
 		
@@ -79,20 +79,20 @@ public class TeachingClassScore {
 	 * @param studentID
 	 * @return 分项成绩集合
 	 */
-	public HashMap<MarkTypeEnum,Mark> getStudentAllSubMark(StudentID studentID){
+	public HashMap<ScoreTypeEnum,Mark> getStudentAllSubMark(StudentID studentID){
 		if(this.scoreReportCards.isEmpty()) return null;
 		
-		HashMap<MarkTypeEnum,Mark> studentSubMarks = null;
+		HashMap<ScoreTypeEnum,Mark> studentSubMarks = null;
 		
 		Iterator iter=this.scoreReportCards.entrySet().iterator();
 		while(iter.hasNext()){
 			
-			Map.Entry<MarkTypeEnum,ScoreReportCard> entry=(Map.Entry<MarkTypeEnum,ScoreReportCard>)iter.next();
+			Map.Entry<ScoreTypeEnum,ScoreReportCard> entry=(Map.Entry<ScoreTypeEnum,ScoreReportCard>)iter.next();
 			
 			Mark oneMark =entry.getValue().getScore(studentID);
 			if(oneMark!=null){
 				if(studentSubMarks==null) {
-					studentSubMarks=new HashMap<MarkTypeEnum,Mark>();
+					studentSubMarks=new HashMap<ScoreTypeEnum,Mark>();
 				}
 				studentSubMarks.put(entry.getKey(), oneMark);
 			}

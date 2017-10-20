@@ -4,7 +4,7 @@ import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreFactory;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
 import gds.scoreMgt.domain.share.Mark;
-import gds.scoreMgt.domain.share.MarkTypeEnum;
+import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import gds.scoreMgt.domain.teachingclass.TeachingClass;
 import gds.scoreMgt.domain.teachingclass.TeachingClassFactory;
 import gds.scoreMgt.domain.teachingclass.TeachingClassRepository;
@@ -40,7 +40,7 @@ public class Tool {
 	/*
 	 * 登记成绩
 	 */
-	public static void RegisterMark(TeachingClassID teachingClassID,StudentID studentID,MarkTypeEnum markType,Mark mark) throws Exception{
+	public static void RegisterMark(TeachingClassID teachingClassID,StudentID studentID,ScoreTypeEnum markType,Mark mark) throws Exception{
 		TeachingClassScore aTeachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(teachingClassID);
 		aTeachingClassScore.registerScore(studentID,markType, mark);
 	}

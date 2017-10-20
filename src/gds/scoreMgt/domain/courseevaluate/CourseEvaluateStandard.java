@@ -8,7 +8,9 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import gds.scoreMgt.domain.share.MarkTypeEnum;
+import gds.scoreMgt.domain.share.CheckTypeEnum;
+import gds.scoreMgt.domain.share.LevelMarkEnum;
+import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import infrastructure.entityID.CourseID;
 
 /**
@@ -19,11 +21,16 @@ import infrastructure.entityID.CourseID;
 public class CourseEvaluateStandard {
 	private CourseID courseID;
 	private String termID;//暂时不实现，先留着
-	private Set<MarkTypeEnum> requireMarkTypes=new HashSet();
-	private HashMap<MarkTypeEnum,Float> everyMarkWeighting=new HashMap();
+	//考和方式
+	private CheckTypeEnum checkType;
+	
+	//考试要求
+	private Set<ScoreTypeEnum> requireMarkTypes=new HashSet();
+	private HashMap<ScoreTypeEnum,Float> everyMarkWeighting=new HashMap();
 	
 	public CourseEvaluateStandard(CourseID courseID){
 		this.courseID=courseID;
+		this.requireMarkTypes.add(ScoreTypeEnum.FINAL);
 	}
 	
 	public String getTermID() {
@@ -34,15 +41,23 @@ public class CourseEvaluateStandard {
 		this.termID = termID;
 	}
 
-	public Set<MarkTypeEnum> getRequireMarkTypes() {
+	public Set<ScoreTypeEnum> getRequireMarkTypes() {
 		return requireMarkTypes;
 	}
 
+	public CheckTypeEnum getCheckType() {
+		return checkType;
+	}
+
+	public void setCheckType(CheckTypeEnum checkType) {
+		this.checkType = checkType;
+	}
+	
 	/**
 	 * 添加必考项
 	 * @param requireMarkType
 	 */
-	public void addRequireMarkTypes(MarkTypeEnum requireMarkType) {
+	public void addRequireMarkTypes(ScoreTypeEnum requireMarkType) {
 		this.requireMarkTypes.add(requireMarkType);
 	}
 
@@ -50,7 +65,7 @@ public class CourseEvaluateStandard {
 		return courseID;
 	}
 
-	public HashMap<MarkTypeEnum, Float> getEveryMarkWeighting() {
+	public HashMap<ScoreTypeEnum, Float> getEveryMarkWeighting() {
 		return everyMarkWeighting;
 	}
 
@@ -60,7 +75,7 @@ public class CourseEvaluateStandard {
 	 * @param weighting
 	 * @throws Exception
 	 */
-	public void setCalculateFinalScoreUsingSubmarkWeighting(MarkTypeEnum markType,Float weighting) throws Exception{
+	public void setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum markType,Float weighting) throws Exception{
 		if(!this.requireMarkTypes.contains(markType)){
 			throw new Exception("当前课程的考核不包含真要制定权重的考核！");
 		}
@@ -92,7 +107,26 @@ public class CourseEvaluateStandard {
 	/**
 	 * 考核标准是否要求考核该类成绩
 	 */
-	public boolean requireMarkType(MarkTypeEnum markType){
+	public boolean requireScoreType(ScoreTypeEnum markType){
 		return this.requireMarkTypes.contains(markType)?true:false;
+	}
+	
+	/**
+	 * 分数格式是否正确，考试课成绩类型为0..100间浮点数，考查课为等级制
+	 * @return
+	 */
+	public boolean markStyleIsCorrectly(java.lang.Class markStyle){
+		if(this.getCheckType()==null)
+			return false;
+		
+		if(this.getCheckType().equals(CheckTypeEnum.EXAM)){
+			return markStyle.equals(java.lang.Float.class)?true:false;
+		}
+		
+		if(this.getCheckType().equals(CheckTypeEnum.INSPECT)){
+			return markStyle.equals(LevelMarkEnum.class)?true:false;
+		}
+		
+		return false;
 	}
 }

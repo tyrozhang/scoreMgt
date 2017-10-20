@@ -6,7 +6,7 @@ import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandard;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
 import gds.scoreMgt.domain.share.Mark;
-import gds.scoreMgt.domain.share.MarkTypeEnum;
+import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import gds.scoreMgt.domain.teachingclass.TeachingClass;
 import gds.scoreMgt.domain.teachingclass.TeachingClassRepository;
 import infrastructure.entityID.CourseID;
@@ -23,7 +23,7 @@ public class CalculateFinalScoreService {
 		//得到学生的课程分项成绩
 		TeachingClassScore teachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(teachingClassID);
 		
-		HashMap<MarkTypeEnum,Mark> subScore=teachingClassScore.getStudentAllSubMark(studentID);
+		HashMap<ScoreTypeEnum,Mark> subScore=teachingClassScore.getStudentAllSubMark(studentID);
 		
 		if(subScore==null) return null;
 		if(subScore.isEmpty()) return null;
@@ -32,11 +32,11 @@ public class CalculateFinalScoreService {
 		CourseID courseID=teachingClassScore.getCourseID();
 		//以下为模拟代码
 		CourseEvaluateStandard courseEvaluateStandard=new CourseEvaluateStandard(courseID);
-		courseEvaluateStandard.addRequireMarkTypes(MarkTypeEnum.DAILYPORFORMANCE);
-		courseEvaluateStandard.addRequireMarkTypes(MarkTypeEnum.TESTPAPERMARK);
+		courseEvaluateStandard.addRequireMarkTypes(ScoreTypeEnum.DAILYPORFORMANCE);
+		courseEvaluateStandard.addRequireMarkTypes(ScoreTypeEnum.TESTPAPERMARK);
 		
-		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(MarkTypeEnum.DAILYPORFORMANCE,30f);
-		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(MarkTypeEnum.TESTPAPERMARK,70f);
+		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum.DAILYPORFORMANCE,30f);
+		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum.TESTPAPERMARK,70f);
 		
 		//检查课程标准中计算最终成绩权重是否正确
 		if(!courseEvaluateStandard.sumWeightingIsHundred())
@@ -45,7 +45,7 @@ public class CalculateFinalScoreService {
 		}
 		
 		//检查计算总成绩所需的分项成绩是否均有
-		for(MarkTypeEnum askForMarkType:courseEvaluateStandard.getEveryMarkWeighting().keySet())
+		for(ScoreTypeEnum askForMarkType:courseEvaluateStandard.getEveryMarkWeighting().keySet())
 		{
 			if(!subScore.containsKey(askForMarkType)){
 				throw new Exception("缺少计算总成绩所需的分项成绩！");
@@ -54,7 +54,7 @@ public class CalculateFinalScoreService {
 			
 		//计算最终成绩
 		Float finalMark=0f;
-		for(MarkTypeEnum askForMarkType:courseEvaluateStandard.getEveryMarkWeighting().keySet())
+		for(ScoreTypeEnum askForMarkType:courseEvaluateStandard.getEveryMarkWeighting().keySet())
 		{
 			Float weighting=courseEvaluateStandard.getEveryMarkWeighting().get(askForMarkType);
 			Float subMark=(Float) subScore.get(askForMarkType).getMark();

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import gds.scoreMgt.domain.share.Mark;
-import gds.scoreMgt.domain.share.MarkTypeEnum;
+import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import infrastructure.entityID.StudentID;
 import infrastructure.entityID.TeachingClassID;
 
@@ -17,16 +17,16 @@ import infrastructure.entityID.TeachingClassID;
  */
 public class ScoreReportCard {
 	
-	private MarkTypeEnum examType;
+	private ScoreTypeEnum examType;
 	private HashMap<StudentID,Mark> scores;
 	//private HashMap<MarkTypeEnum,ScoreReportCard> scoreReportCards=new HashMap<MarkTypeEnum,ScoreReportCard>();
 	
-	public ScoreReportCard(MarkTypeEnum examType)
+	public ScoreReportCard(ScoreTypeEnum examType)
 	{
 		this.examType=examType;
 	}
 
-	public MarkTypeEnum getExamType() {
+	public ScoreTypeEnum getExamType() {
 		return examType;
 	}
 	
@@ -54,7 +54,7 @@ public class ScoreReportCard {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public void registerScore(StudentID studentID, MarkTypeEnum markType,Mark mark) throws Exception{
+	public void registerScore(StudentID studentID, ScoreTypeEnum markType,Mark mark) throws Exception{
 		//登记成绩
 		this.registerScore(studentID, mark);
 	}
