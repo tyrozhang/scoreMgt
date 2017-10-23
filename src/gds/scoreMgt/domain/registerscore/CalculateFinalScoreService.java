@@ -3,8 +3,10 @@ package gds.scoreMgt.domain.registerscore;
 import java.util.HashMap;
 
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandard;
+import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardRepository;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
+import gds.scoreMgt.domain.share.CheckTypeEnum;
 import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import gds.scoreMgt.domain.share.mark.HundredMark;
 import gds.scoreMgt.domain.share.mark.Mark;
@@ -30,14 +32,16 @@ public class CalculateFinalScoreService {
 		if(subScore.isEmpty()) return null;
 		
 		//得到课程的考核标准
-		CourseID courseID=teachingClassScore.getCourseID();
-		//以下为模拟代码
-		CourseEvaluateStandard courseEvaluateStandard=new CourseEvaluateStandard(courseID);
-		courseEvaluateStandard.addRequireMarkTypes(ScoreTypeEnum.DAILYPORFORMANCE);
-		courseEvaluateStandard.addRequireMarkTypes(ScoreTypeEnum.TESTPAPERMARK);
+		CourseEvaluateStandard courseEvaluateStandard=CourseEvaluateStandardRepository.getInstance().getCourseEvaluateStandard(teachingClassScore.getCourseID());
 		
-		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum.DAILYPORFORMANCE,30f);
-		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum.TESTPAPERMARK,70f);
+		//未维护当前课程的考核标准，不能进行最终成绩计算
+		if(courseEvaluateStandard==null){
+			throw new Exception("未找到当前课程的考核标准，请检查！");
+		}
+		
+		if(courseEvaluateStandard.getCheckType().equals(CheckTypeEnum.INSPECT)){
+			throw new Exception("考查课不需要进行成绩计算！");
+		}
 		
 		//检查课程标准中计算最终成绩权重是否正确
 		if(!courseEvaluateStandard.sumWeightingIsHundred())

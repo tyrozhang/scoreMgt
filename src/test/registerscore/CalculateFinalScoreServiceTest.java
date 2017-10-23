@@ -45,7 +45,7 @@ public class CalculateFinalScoreServiceTest {
 		/*
 		 * 登记成绩
 		 */
-		RegisterTeachingClassScoreService<Float> rtss=new RegisterTeachingClassScoreService<Float>();
+		RegisterTeachingClassScoreService rtss=new RegisterTeachingClassScoreService();
 		//登记平时成绩
 		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new HundredMark(80f));
 		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new HundredMark(90f));
@@ -56,10 +56,11 @@ public class CalculateFinalScoreServiceTest {
 
 		//计算最终成绩
 		CalculateFinalScoreService alculateFinalScoreService=new CalculateFinalScoreService();
-		HundredMark finalMark=alculateFinalScoreService.calculateFinalScore(teachingClassID,firstStudentID);
-		//System.out.println(aTeachingClass.getStudentScore(firstStudentID).getClass());
+		HundredMark firstStudentFinalMark=alculateFinalScoreService.calculateFinalScore(teachingClassID,firstStudentID);
+		assertTrue(firstStudentFinalMark.getMark().equals((80f*30f+75f*70F)/100));
 		
-		assertTrue(finalMark.getMark().equals((80f*30f+75f*70F)/100));
+		HundredMark secondStudentFinalMark=alculateFinalScoreService.calculateFinalScore(teachingClassID,secondStudentID);
+		assertTrue(secondStudentFinalMark.getMark().equals((90f*30f+87f*70F)/100));
 	}
 
 }
