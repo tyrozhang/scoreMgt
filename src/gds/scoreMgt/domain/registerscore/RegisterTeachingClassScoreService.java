@@ -7,8 +7,8 @@ import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreFactory;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
 import gds.scoreMgt.domain.share.CheckTypeEnum;
-import gds.scoreMgt.domain.share.Mark;
 import gds.scoreMgt.domain.share.ScoreTypeEnum;
+import gds.scoreMgt.domain.share.mark.Mark;
 import gds.scoreMgt.domain.teachingclass.TeachingClass;
 import gds.scoreMgt.domain.teachingclass.TeachingClassFactory;
 import gds.scoreMgt.domain.teachingclass.TeachingClassRepository;
@@ -26,7 +26,7 @@ public  class RegisterTeachingClassScoreService<T> {
 		super();
 	}
 	
-	public void registerScore(TeachingClassID teachingClassID,StudentID studentID, ScoreTypeEnum scoreType,Mark<T> mark) throws Exception{
+	public void registerScore(TeachingClassID teachingClassID,StudentID studentID, ScoreTypeEnum scoreType,Mark mark) throws Exception{
 	
 		/*
 		 * 查看学员是否是上课学员之一
@@ -54,7 +54,7 @@ public  class RegisterTeachingClassScoreService<T> {
 		}
 		
 		//检测成绩格式是否符合课程标准中相关要求
-		if(!courseEvaluateStandard.markStyleIsCorrectly(mark.getMark().getClass()))
+		if(!courseEvaluateStandard.markStyleIsCorrectly(mark))
 		{
 			throw new Exception("录入的成绩格式不符合课程考核标准中要求的考核方式，请核查！");
 		}

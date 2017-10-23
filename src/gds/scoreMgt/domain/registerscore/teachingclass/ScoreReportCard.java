@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import gds.scoreMgt.domain.share.Mark;
 import gds.scoreMgt.domain.share.ScoreTypeEnum;
+import gds.scoreMgt.domain.share.mark.Mark;
 import infrastructure.entityID.StudentID;
 import infrastructure.entityID.TeachingClassID;
 

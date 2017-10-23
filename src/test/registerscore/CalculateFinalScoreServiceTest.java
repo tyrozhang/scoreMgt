@@ -11,8 +11,9 @@ import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardRepository;
 import gds.scoreMgt.domain.registerscore.CalculateFinalScoreService;
 import gds.scoreMgt.domain.registerscore.RegisterTeachingClassScoreService;
 import gds.scoreMgt.domain.share.CheckTypeEnum;
-import gds.scoreMgt.domain.share.Mark;
 import gds.scoreMgt.domain.share.ScoreTypeEnum;
+import gds.scoreMgt.domain.share.mark.HundredMark;
+import gds.scoreMgt.domain.share.mark.Mark;
 import gds.scoreMgt.domain.teachingclass.TeachingClass;
 import gds.scoreMgt.domain.teachingclass.TeachingClassFactory;
 import gds.scoreMgt.domain.teachingclass.TeachingClassRepository;
@@ -46,18 +47,18 @@ public class CalculateFinalScoreServiceTest {
 		 */
 		RegisterTeachingClassScoreService<Float> rtss=new RegisterTeachingClassScoreService<Float>();
 		//登记平时成绩
-		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new Mark<Float>(80f));
-		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new Mark<Float>(90f));
+		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new HundredMark(80f));
+		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new HundredMark(90f));
 		
 		//登记考试成绩
-		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.TESTPAPERMARK, new Mark<Float>(75f));
-		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.TESTPAPERMARK, new Mark<Float>(87f));
+		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.TESTPAPERMARK, new HundredMark(75f));
+		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.TESTPAPERMARK, new HundredMark(87f));
 
 		//计算最终成绩
 		CalculateFinalScoreService alculateFinalScoreService=new CalculateFinalScoreService();
-		Mark finalMark=alculateFinalScoreService.calculateFinalScore(teachingClassID,firstStudentID);
-
+		HundredMark finalMark=alculateFinalScoreService.calculateFinalScore(teachingClassID,firstStudentID);
 		//System.out.println(aTeachingClass.getStudentScore(firstStudentID).getClass());
+		
 		assertTrue(finalMark.getMark().equals((80f*30f+75f*70F)/100));
 	}
 

@@ -9,7 +9,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import gds.scoreMgt.domain.share.CheckTypeEnum;
-import gds.scoreMgt.domain.share.LevelMarkEnum;
+import gds.scoreMgt.domain.share.mark.Mark;
+import gds.scoreMgt.domain.share.rule.CheckTypeFitMarkTypeRule;
 import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import infrastructure.entityID.CourseID;
 
@@ -114,19 +115,9 @@ public class CourseEvaluateStandard {
 	/**
 	 * 分数格式是否正确，考试课成绩类型为0..100间浮点数，考查课为等级制
 	 * @return
+	 * @throws Exception 
 	 */
-	public boolean markStyleIsCorrectly(java.lang.Class markStyle){
-		if(this.getCheckType()==null)
-			return false;
-		
-		if(this.getCheckType().equals(CheckTypeEnum.EXAM)){
-			return markStyle.equals(java.lang.Float.class)?true:false;
-		}
-		
-		if(this.getCheckType().equals(CheckTypeEnum.INSPECT)){
-			return markStyle.equals(LevelMarkEnum.class)?true:false;
-		}
-		
-		return false;
+	public boolean markStyleIsCorrectly(Mark mark) {
+		return CheckTypeFitMarkTypeRule.CheckTypeIsFitMarkType(this.checkType,mark);
 	}
 }

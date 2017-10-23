@@ -5,8 +5,9 @@ import java.util.HashMap;
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandard;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
-import gds.scoreMgt.domain.share.Mark;
 import gds.scoreMgt.domain.share.ScoreTypeEnum;
+import gds.scoreMgt.domain.share.mark.HundredMark;
+import gds.scoreMgt.domain.share.mark.Mark;
 import gds.scoreMgt.domain.teachingclass.TeachingClass;
 import gds.scoreMgt.domain.teachingclass.TeachingClassRepository;
 import infrastructure.entityID.CourseID;
@@ -19,7 +20,7 @@ public class CalculateFinalScoreService {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public Mark calculateFinalScore(TeachingClassID teachingClassID,StudentID studentID) throws Exception{
+	public HundredMark calculateFinalScore(TeachingClassID teachingClassID,StudentID studentID) throws Exception{
 		//得到学生的课程分项成绩
 		TeachingClassScore teachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(teachingClassID);
 		
@@ -57,9 +58,9 @@ public class CalculateFinalScoreService {
 		for(ScoreTypeEnum askForMarkType:courseEvaluateStandard.getEveryMarkWeighting().keySet())
 		{
 			Float weighting=courseEvaluateStandard.getEveryMarkWeighting().get(askForMarkType);
-			Float subMark=(Float) subScore.get(askForMarkType).getMark();
-			finalMark+=weighting*subMark;
+			HundredMark subMark=(HundredMark) subScore.get(askForMarkType);
+			finalMark+=weighting*subMark.getMark();
 		}
-		return new Mark<Float>(finalMark/100);
+		return new HundredMark(finalMark/100);
 	}
 }
