@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import gds.scoreMgt.domain.registerscore.common.BreakRuleBehaviorEnum;
 import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import gds.scoreMgt.domain.share.mark.Mark;
 import infrastructure.entityID.StudentID;
@@ -18,8 +19,10 @@ import infrastructure.entityID.TeachingClassID;
 public class ScoreReportCard {
 	
 	private ScoreTypeEnum examType;
+	//学生分数
 	private HashMap<StudentID,Mark> scores;
-	//private HashMap<MarkTypeEnum,ScoreReportCard> scoreReportCards=new HashMap<MarkTypeEnum,ScoreReportCard>();
+	//违纪行为
+	private HashMap<StudentID,BreakRuleBehaviorEnum> breakRules;
 	
 	public ScoreReportCard(ScoreTypeEnum examType)
 	{
@@ -42,57 +45,36 @@ public class ScoreReportCard {
 		this.scores.put(studentID, mark);
 	}
 
+	/**
+	 * 登记考试违纪行为
+	 * @param studentID
+	 * @param breakRuleBehavior 考试违纪行为
+	 */
+	public void registerBreakRuleBehavior(StudentID studentID, BreakRuleBehaviorEnum breakRuleBehavior) {
+		if(breakRules==null){
+			breakRules=new HashMap<StudentID,BreakRuleBehaviorEnum>();
+		}
+		
+		this.breakRules.put(studentID, breakRuleBehavior);
+	}
+	
+
+	/**
+	 * 得到学员该分项成绩
+	 */
 	public Mark getScore(StudentID studentID){
 		if(scores==null) return null;
 		return this.scores.getOrDefault(studentID, null);
-	}	 
-	/**
-	 * 登记成绩
-	 * @param studentID
-	 * @param markType
-	 * @param mark
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public void registerScore(StudentID studentID, ScoreTypeEnum markType,Mark mark) throws Exception{
-		//登记成绩
-		this.registerScore(studentID, mark);
 	}
-		
+
 	/**
-	 * 得到学生登记的某项成绩
+	 * 取得学生在本次考试中违纪行为
 	 * @param studentID
-	 * @param markType
-	 * @return 分数
+	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	public Mark getStudentScore(StudentID studentID){
-		return this.getScore(studentID);
+	public BreakRuleBehaviorEnum getBreakRuleBehavior(StudentID studentID) {
+		if(breakRules==null) return null;
+		return this.breakRules.getOrDefault(studentID, null);
 	}
-	
-	/**
-	 * 得到该教学班中某学生的所有分项成绩
-	 * @param studentID
-	 * @return 分项成绩集合
-	 */
-/*	public HashMap<MarkTypeEnum,Mark> getStudentAllSubMark(StudentID studentID){
-		if(this.scoreReportCards.isEmpty()) return null;
-		
-		HashMap<MarkTypeEnum,Mark> studentSubMark = null;
-		
-		Iterator iter=this.scoreReportCards.entrySet().iterator();
-		while(iter.hasNext()){
-			
-			Map.Entry<MarkTypeEnum,ScoreReportCard> entry=(Map.Entry<MarkTypeEnum,ScoreReportCard>)iter.next();
-			
-			Mark oneMark =entry.getValue().getScore(studentID);
-			if(oneMark!=null){
-				if(studentSubMark==null) {
-					studentSubMark=new HashMap<MarkTypeEnum,Mark>();
-				}
-				studentSubMark.put(entry.getKey(), oneMark);
-			}
-		}
-		return studentSubMark;
-	}*/
+
 }

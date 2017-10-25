@@ -8,6 +8,7 @@ import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandard;
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardFactory;
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardRepository;
 import gds.scoreMgt.domain.registerscore.RegisterTeachingClassScoreService;
+import gds.scoreMgt.domain.registerscore.common.BreakRuleBehaviorEnum;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
 import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
 import gds.scoreMgt.domain.share.CheckTypeEnum;
@@ -59,14 +60,14 @@ public class RegisterTeachingClassScoreTest {
 		/*
 		 * 登记成绩
 		 */
-		RegisterTeachingClassScoreService rtss=new RegisterTeachingClassScoreService();
+		RegisterTeachingClassScoreService rtss=new RegisterTeachingClassScoreService(teachingClassID);
 		//登记平时成绩
-		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new HundredMark(80f));
-		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.DAILYPORFORMANCE, new HundredMark(90f));
+		rtss.registerScore(firstStudentID,ScoreTypeEnum.DAILYPORFORMANCE,new HundredMark(80f));
+		rtss.registerScore(secondStudentID,ScoreTypeEnum.DAILYPORFORMANCE,new HundredMark(90f));
 		
 		//登记考试成绩
-		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.TESTPAPERMARK, new HundredMark(75f));
-		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.TESTPAPERMARK, new HundredMark(87f));
+		rtss.registerScore(firstStudentID,ScoreTypeEnum.TESTPAPERMARK,new HundredMark(75f));
+		rtss.registerScore(secondStudentID,ScoreTypeEnum.TESTPAPERMARK,new HundredMark(87f));
 		
 		
 		TeachingClassScore aTeachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(teachingClassID);
@@ -95,10 +96,10 @@ public class RegisterTeachingClassScoreTest {
 		/*
 		 * 登记成绩
 		 */
-		RegisterTeachingClassScoreService rtss=new RegisterTeachingClassScoreService();
+		RegisterTeachingClassScoreService rtss=new RegisterTeachingClassScoreService(teachingClassID);
 		//登记最终成绩
-		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.FINAL, new LevelMark(TwoLevelMarkTypeEnum.PASS));
-		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.FINAL, new LevelMark(TwoLevelMarkTypeEnum.FAIL));
+		rtss.registerScore(firstStudentID,ScoreTypeEnum.FINAL,new LevelMark(TwoLevelMarkTypeEnum.PASS));
+		rtss.registerScore(secondStudentID,ScoreTypeEnum.FINAL,new LevelMark(TwoLevelMarkTypeEnum.FAIL));
 
 		
 		TeachingClassScore aTeachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(teachingClassID);
@@ -130,10 +131,10 @@ public class RegisterTeachingClassScoreTest {
 		/*
 		 * 登记成绩
 		 */
-		RegisterTeachingClassScoreService rtss=new RegisterTeachingClassScoreService();
+		RegisterTeachingClassScoreService rtss=new RegisterTeachingClassScoreService(teachingClassID);
 		//登记最终成绩
-		rtss.registerScore(teachingClassID,firstStudentID,ScoreTypeEnum.FINAL, new HundredMark(88f));
-		rtss.registerScore(teachingClassID,secondStudentID,ScoreTypeEnum.FINAL, new HundredMark(77f));
+		rtss.registerScore(firstStudentID,ScoreTypeEnum.FINAL,new HundredMark(88f));
+		rtss.registerScore(secondStudentID,ScoreTypeEnum.FINAL,new HundredMark(77f));
 
 
 		TeachingClassScore aTeachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(teachingClassID);
@@ -141,5 +142,40 @@ public class RegisterTeachingClassScoreTest {
 		assertTrue(((HundredMark)aTeachingClassScore.getStudentScore(firstStudentID,ScoreTypeEnum.FINAL)).getMark().equals(88f));
 		assertTrue(((HundredMark)aTeachingClassScore.getStudentScore(secondStudentID,ScoreTypeEnum.FINAL)).getMark().equals(77f));
 
+	}
+	
+	/**
+	 * 登记作弊测试
+	 * @throws Exception
+	 */
+	@Test
+	public void registerBreakRule() throws Exception {
+		//生成教学班
+		CourseID courseID=new CourseID();
+		String courseName="高等数学";
+		TeachingClassID teachingClassID=Tool.createTeachingClass(courseID, courseName);
+		
+		//添加学生
+		StudentID firstStudentID=Tool.AddStudentToTeachingClass(teachingClassID);		
+
+		//添加课程标准
+		CourseEvaluateStandard courseEvaluateStandard=CourseEvaluateStandardFactory.getInstance().createCourseEvaluateStandard(courseID);
+		courseEvaluateStandard.addRequireMarkTypes(ScoreTypeEnum.DAILYPORFORMANCE);
+		courseEvaluateStandard.addRequireMarkTypes(ScoreTypeEnum.TESTPAPERMARK);
+		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum.DAILYPORFORMANCE, 30f);
+		courseEvaluateStandard.setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum.TESTPAPERMARK, 70f);
+		courseEvaluateStandard.setCheckType(CheckTypeEnum.EXAM);
+		CourseEvaluateStandardRepository.getInstance().save(courseEvaluateStandard);
+		
+		/*
+		 * 登记成绩
+		 */
+		RegisterTeachingClassScoreService rtss=new RegisterTeachingClassScoreService(teachingClassID);
+		//登记作弊
+		rtss.registerBreakRuleBehavior(firstStudentID,ScoreTypeEnum.TESTPAPERMARK,BreakRuleBehaviorEnum.Cheated);
+		
+		TeachingClassScore aTeachingClassScore=TeachingClassScoreRepository.getInstance().getTeachingClassScore(teachingClassID);
+	
+		assertTrue(aTeachingClassScore.getBreakRuleBehavior(firstStudentID,ScoreTypeEnum.TESTPAPERMARK).equals(BreakRuleBehaviorEnum.Cheated));
 	}
 }

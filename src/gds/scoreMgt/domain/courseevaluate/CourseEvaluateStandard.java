@@ -22,7 +22,7 @@ import infrastructure.entityID.CourseID;
 public class CourseEvaluateStandard {
 	private CourseID courseID;
 	private String termID;//暂时不实现，先留着
-	//考和方式
+	//考核方式
 	private CheckTypeEnum checkType;
 	
 	//考试要求
@@ -31,6 +31,7 @@ public class CourseEvaluateStandard {
 	
 	public CourseEvaluateStandard(CourseID courseID){
 		this.courseID=courseID;
+		//默认要求必须有最终成绩项
 		this.requireMarkTypes.add(ScoreTypeEnum.FINAL);
 	}
 	
@@ -78,7 +79,7 @@ public class CourseEvaluateStandard {
 	 */
 	public void setCalculateFinalScoreUsingSubmarkWeighting(ScoreTypeEnum markType,Float weighting) throws Exception{
 		if(!this.requireMarkTypes.contains(markType)){
-			throw new Exception("当前课程的考核不包含真要制定权重的考核！");
+			throw new Exception("当前课程的考核不包含要制定权重的考核！");
 		}
 		
 		if((weighting<0) || (weighting>100)){
@@ -106,7 +107,7 @@ public class CourseEvaluateStandard {
 	}
 	
 	/**
-	 * 考核标准是否要求考核该类成绩
+	 * 是否要求考核该类成绩
 	 */
 	public boolean requireScoreType(ScoreTypeEnum markType){
 		return this.requireMarkTypes.contains(markType)?true:false;
