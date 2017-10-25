@@ -1,8 +1,8 @@
 package test.registerscore;
 
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreFactory;
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
+import gds.scoreMgt.domain.registerscore.registerteachingclassscore.TeachingClassScore;
+import gds.scoreMgt.domain.registerscore.registerteachingclassscore.TeachingClassScoreFactory;
+import gds.scoreMgt.domain.registerscore.registerteachingclassscore.TeachingClassScoreRepository;
 import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import gds.scoreMgt.domain.share.mark.Mark;
 import gds.scoreMgt.domain.teachingclass.TeachingClass;

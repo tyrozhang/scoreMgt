@@ -1,7 +1,7 @@
 /**
  * 
  */
-package gds.scoreMgt.domain.registerscore.teachingclass;
+package gds.scoreMgt.domain.registerscore.registerteachingclassscore;
 
 import java.util.HashMap;
 

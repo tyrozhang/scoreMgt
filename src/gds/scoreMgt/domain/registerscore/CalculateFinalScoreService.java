@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandard;
 import gds.scoreMgt.domain.courseevaluate.CourseEvaluateStandardRepository;
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScore;
-import gds.scoreMgt.domain.registerscore.teachingclass.TeachingClassScoreRepository;
+import gds.scoreMgt.domain.registerscore.registerteachingclassscore.TeachingClassScore;
+import gds.scoreMgt.domain.registerscore.registerteachingclassscore.TeachingClassScoreRepository;
 import gds.scoreMgt.domain.share.CheckTypeEnum;
 import gds.scoreMgt.domain.share.ScoreTypeEnum;
 import gds.scoreMgt.domain.share.mark.HundredMark;
